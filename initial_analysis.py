@@ -13,10 +13,16 @@ codes.fillna(method="ffill")
 
 #get data by judges
 
+#unique_judges_raw = ["{}+{}".format(allmn.iloc[i].jlname,allmn.iloc[i].jfname.split(" ")[0]) for i in range(len(allmn))]
+unique_judges = list(set([(x[0],str(x[1]))  for x in allmn[["jlname","jfname"]].to_numpy()]))
 
-unique_judges = np.unique(["{}.{}".format(allmn.iloc[i].jlname,allmn.iloc[i].jfname) for i in range(len(allmn))])
-judges = {j:{"sentences":[],"summaries":[]} for j in unique_judges}
+judges = {j:{"sentences":allmn[(allmn.jlname == j[0]) & (allmn.jfname == j[1])],"summaries":[]} for j in tqdm.tqdm(unique_judges)}
 
-for i in range(len(allmn)):
-    jname = "{}.{}".format(allmn.iloc[i].jlname,allmn.iloc[i].jfname)
-    judges[jname]["sentences"].append(allmn.iloc[i].to_numpy())
+#offtype, 1-> 8, drop sex crimes (5)
+#focus a few offense types
+#severity, 1 -> 12
+#focus just on severity?
+
+#just do severity
+
+#just do offtype
