@@ -8,8 +8,8 @@ Descriptors for variables are found in https://api.census.gov/data/2019/acs/acs5
 
 To read in the data via Python's pandas, you can use
 
-"""
+```
 import pandas as pd
 
 censusmn = pd.read_csv("census_data.csv")
-"""
+```
