@@ -1,9 +1,8 @@
-#import packages
-
 import numpy as np
 import pandas as pd
-import geopandas as gdp
+#import geopandas as gdp
 
+import tqdm
 import matplotlib.pyplot as plt
 
 allmn = pd.read_csv("./Data/allmn.csv",low_memory=False)
@@ -26,3 +25,17 @@ judges = {j:{"sentences":allmn[(allmn.jlname == j[0]) & (allmn.jfname == j[1])],
 #just do severity
 
 #just do offtype
+
+a =[]
+for i in range(len(unique_judges)):
+    a.append(len(judges[unique_judges[i]]["sentences"])<50)
+
+def populate_summaries(judge_df, unique_judges, demographic_sig, criminality_sig):
+    all_dsig = judge_df[unique_judges[1]]["sentences"][demographic_sig].unique()
+    all_csig = judge_df[unique_judges[1]]["sentences"][criminality_sig].unique()
+    for sig1 in all_csig:
+        for sig2 in all_dsig:
+            for k in unique_judges:
+                temp = judge_df[k]['sentences']
+                judge_df[k]['summaries'].append(temp[(temp[demographic_sig] == sig1) & (temp[criminality_sig] == sig2)]['time'].mean())
+
